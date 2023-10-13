@@ -1,5 +1,10 @@
 class Contact:
     def __init__(self, name, address, phone, mail, birth_date):
+        self.name = name
+        self.address = address
+        self.phone = phone
+        self.mail = mail
+        self.birth_date = birth_date
         pass
 
     def validate_phone_number(self):
