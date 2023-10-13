@@ -1,6 +1,10 @@
 class Contact:
     def __init__(self, name, address, phone, mail, birth_date):
-        pass
+        self.name = name
+        self.address = address
+        self.phone = phone
+        self.mail = mail
+        self.birth_date = birth_date
 
     def validate_phone_number(self):
         pass
@@ -9,6 +13,9 @@ class Contact:
         pass
 
     def edit_contact_address(self, new_address):
+        pass
+
+    def edit_contact_name(self, new_name):
         pass
 
     def edit_contact_phone(self, new_phone):
