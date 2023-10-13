@@ -3,15 +3,19 @@ class ContactList:
 
     def __init__(self, contact_list):
         self.contact_list = contact_list
+        self.contact_names = None
 
     def add_new_contact(self, contact):
         pass
 
     def check_if_contact_exists_in_contact_list(self, contact_name):
-        contact_names = []
+        self.refresh_contact_names()
+        return contact_name in self.contact_names
+
+    def refresh_contact_names(self):
+        self.contact_names = []
         for contact in self.contact_list:
-            contact_names.append(contact.name)
-        return contact_name in contact_names
+            self.contact_names.append(contact.name)
 
     def get_contact_from_contact_list(self, contact_name):
         pass
