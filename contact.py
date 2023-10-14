@@ -1,3 +1,5 @@
+import re
+
 class Contact:
     def __init__(self, name, address, phone, mail, birth_date):
         self.name = name
@@ -6,11 +8,19 @@ class Contact:
         self.mail = mail
         self.birth_date = birth_date
 
-    def validate_phone_number(self):
-        pass
+    def validate_phone_number(self, phone):
+        pattern = r"\+48\d{9}"
+        if not re.match(pattern, phone):
+            print("You entered wrong format of phone number")
+            raise ValueError
+        self.phone = phone
 
-    def validate_email_address(self):
-        pass
+    def validate_email_address(self, mail):
+        pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"
+        if not re.match(pattern, mail):
+            print("You entered wrong format of email address")
+            raise ValueError
+        self.mail = mail
 
     def edit_contact_address(self, new_address):
         self.address = new_address
