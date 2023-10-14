@@ -1,3 +1,5 @@
+import re
+
 class Contact:
     def __init__(self, name, address, phone, mail, birth_date):
         self.name = name
@@ -19,11 +21,17 @@ class Contact:
         str_contact += "\n"
         return str_contact
 
-    def validate_phone_number(self):
-        pass
+    def validate_phone_number(self, phone):
+        pattern = r"\+48\d{9}"
+        if not re.match(pattern, phone):
+            return False
+        return True
 
-    def validate_email_address(self):
-        pass
+    def validate_email_address(self, mail):
+        pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"
+        if not re.match(pattern, mail):
+            return False
+        return True
 
     def edit_contact_address(self, new_address):
         self.address = new_address
