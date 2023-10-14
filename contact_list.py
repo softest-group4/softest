@@ -18,7 +18,13 @@ class ContactList:
             self.contact_names.append(contact.name)
 
     def get_contact_from_contact_list(self, contact_name):
-        pass
+        for contact in self.contact_list:
+            if contact.name == contact_name:
+                print(f"Znaleziono kontakt: '{contact_name}'. Numer telefonu: {contact.phone}")
+                return contact
+
+        print(f"Kontakt o nazwie '{contact_name}' nie istnieje.")
+        return None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
         pass
