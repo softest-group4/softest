@@ -42,14 +42,6 @@ class ContactList:
         str_contact_list = f"\nLista kontaktów w Twojej bazie jest następująca:\n"
         str_contact_list += f"******************************************************\n"
         for contact in self.contact_list:
-            str_contact_list += f"{contact.name}:\n"
-            if len(contact.address) > 0:
-                str_contact_list += f"adres: {contact.address}\n"
-            if len(contact.phone) > 0:
-                str_contact_list += f"telefon: {contact.phone}\n"
-            if len(contact.mail) > 0:
-                str_contact_list += f"adres mail: {contact.mail}\n"
-            if len(str(contact.birth_date)) > 0:
-                str_contact_list += f"data urodzenia: {contact.birth_date}\n"
+            str_contact_list += str(contact)
             str_contact_list += f"******************************************************\n"
         return str_contact_list

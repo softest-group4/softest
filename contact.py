@@ -6,6 +6,19 @@ class Contact:
         self.mail = mail
         self.birth_date = birth_date
 
+    def __str__(self):
+        str_contact = f"{self.name}     "
+        if len(self.address) > 0:
+            str_contact += f"adres: {self.address}   "
+        if len(self.phone) > 0:
+            str_contact += f"telefon: {self.phone}   "
+        if len(self.mail) > 0:
+            str_contact += f"adres mail: {self.mail}   "
+        if len(str(self.birth_date)) > 0:
+            str_contact += f"data urodzenia: {self.birth_date}   "
+        str_contact += "\n"
+        return str_contact
+
     def validate_phone_number(self):
         pass
 
