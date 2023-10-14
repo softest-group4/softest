@@ -18,6 +18,8 @@ def main():
     contacts.delete_contact_from_contact_list(f"Andrzej")
     print(20 * f"-")
     print(contacts.get_whole_contact_list())
+    print(contacts.get_contact_from_contact_list("Marta"))
+    print(contacts.get_contact_from_contact_list("Monika"))
 
 
 if __name__ == "__main__":
