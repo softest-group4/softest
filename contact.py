@@ -1,3 +1,4 @@
+from datetime import datetime
 import re
 
 class Contact:
@@ -51,9 +52,39 @@ class Contact:
         else:
             print("Invalid email address. Correct the email format")
 
-
     def edit_contact_birth_date(self, new_birth_date):
         self.birth_date = new_birth_date
 
-    def get_amount_of_days_to_the_nearest_birthday(self):
-        pass
+    def get_amount_of_days_to_the_nearest_birthday(contact_list, days):
+        current_date = datetime.now()
+        upcoming_birthday = []
+
+        for contact in contact_list:
+            birthday = datetime.strptime(contact["birth_date"], "%Y -%m -%d")
+            days_until_birthday = birthday.replace(year=current_date.year)
+            time_until_birthday = days_until_birthday - current_date
+
+            if 0 <= time_until_birthday <= days:
+                upcoming_birthday.append(contact)
+
+        return upcoming_birthday
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
