@@ -27,7 +27,18 @@ class ContactList:
         return None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
-        pass
+        contact_to_edit = None
+
+        for contact in self.contact_list:
+            if contact.name == contact_name:
+                contact_to_edit = contact
+                break
+
+        if contact_to_edit:
+            setattr(contact_to_edit, contact_feature, new_value)
+            print(f"Kontakt o nazwie '{contact_name}' zaktualizowany.")
+        else:
+            print(f"Kontakt o nazwie '{contact_name}' nie istnieje.")
 
     def delete_contact_from_contact_list(self, contact_name):
         contact_to_delete = None
