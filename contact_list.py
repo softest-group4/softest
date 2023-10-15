@@ -3,24 +3,55 @@ class ContactList:
 
     def __init__(self, contact_list):
         self.contact_list = contact_list
+        self.contact_names = None
 
     def add_new_contact(self, contact):
         pass
 
     def check_if_contact_exists_in_contact_list(self, contact_name):
-        contact_names = []
+        self.refresh_contact_names()
+        return contact_name in self.contact_names
+
+    def refresh_contact_names(self):
+        self.contact_names = []
         for contact in self.contact_list:
-            contact_names.append(contact.name)
-        return contact_name in contact_names
+            self.contact_names.append(contact.name)
 
     def get_contact_from_contact_list(self, contact_name):
-        pass
+        for contact in self.contact_list:
+            if contact.name == contact_name:
+                print(f"Znaleziono kontakt: '{contact_name}'. Numer telefonu: {contact.phone}")
+                return contact
+
+        print(f"Kontakt o nazwie '{contact_name}' nie istnieje.")
+        return None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
-        pass
+        contact_to_edit = None
+
+        for contact in self.contact_list:
+            if contact.name == contact_name:
+                contact_to_edit = contact
+                break
+
+        if contact_to_edit:
+            setattr(contact_to_edit, contact_feature, new_value)
+            print(f"Kontakt o nazwie '{contact_name}' zaktualizowany.")
+        else:
+            print(f"Kontakt o nazwie '{contact_name}' nie istnieje.")
 
     def delete_contact_from_contact_list(self, contact_name):
-        pass
+        contact_to_delete = None
+
+        for contact in self.contact_list:
+            if contact.name == contact_name:
+                contact_to_delete = contact
+                break
+        if contact_to_delete:
+            self.contact_list.remove(contact_to_delete)
+            print(f"Kontakt o nazwie '{contact_name}' został usunięty")
+        else:
+            print(f"Nie można usunąć.Kontakt o nazwie'{contact_name}' nie istnieje")
 
     def load_contact_list_from_hard_disc(self):
         pass
@@ -32,14 +63,6 @@ class ContactList:
         str_contact_list = f"\nLista kontaktów w Twojej bazie jest następująca:\n"
         str_contact_list += f"******************************************************\n"
         for contact in self.contact_list:
-            str_contact_list += f"{contact.name}:\n"
-            if len(contact.address) > 0:
-                str_contact_list += f"adres: {contact.address}\n"
-            if len(contact.phone) > 0:
-                str_contact_list += f"telefon: {contact.phone}\n"
-            if len(contact.mail) > 0:
-                str_contact_list += f"adres mail: {contact.mail}\n"
-            if len(str(contact.birth_date)) > 0:
-                str_contact_list += f"data urodzenia: {contact.birth_date}\n"
+            str_contact_list += str(contact)
             str_contact_list += f"******************************************************\n"
         return str_contact_list
