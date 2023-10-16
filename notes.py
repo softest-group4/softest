@@ -1,11 +1,14 @@
+import note
+
 class Notes:
     BACKUP_FILENAME = "notes_backup.txt"
 
     def __init__(self, notes):
         self.notes = notes
 
-    def add_new_note(self, contact):
-        pass
+    def add_new_note(self, title, content):
+        new_note = note.Note(title, content)
+        self.notes.append(new_note)
 
     def check_if_note_exists_in_notes(self, title):
         pass
