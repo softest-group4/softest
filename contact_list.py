@@ -6,7 +6,11 @@ class ContactList:
         self.contact_names = None
 
     def add_new_contact(self, contact):
-        pass
+        if self.check_if_contact_exists_in_contact_list(contact.name):
+            return (f'Niepowodzenie! Kontakt z imieniem {contact.name} już istnieje, wybierz inne imię stosując '
+                    f'indeksację, np {contact.name}_2121')
+        self.contact_list.append(contact)
+        return "Sukces!"
 
     def check_if_contact_exists_in_contact_list(self, contact_name):
         self.refresh_contact_names()
@@ -61,8 +65,7 @@ class ContactList:
 
     def get_whole_contact_list(self):
         str_contact_list = f"\nLista kontaktów w Twojej bazie jest następująca:\n"
-        str_contact_list += f"******************************************************\n"
         for contact in self.contact_list:
             str_contact_list += str(contact)
-            str_contact_list += f"******************************************************\n"
+        str_contact_list += f"------------------------------------------------------------\n"
         return str_contact_list

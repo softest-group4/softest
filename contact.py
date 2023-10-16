@@ -22,16 +22,22 @@ class Contact:
         str_contact += "\n"
         return str_contact
 
-    def validate_phone_number(self, phone):
+    @staticmethod
+    def validate_phone_number(phone):
         pattern = r"\+48\d{9}"
         if not re.match(pattern, phone):
             return False
         return True
 
-    def validate_email_address(self, mail):
+    @staticmethod
+    def validate_email_address(mail):
         pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"
         if not re.match(pattern, mail):
             return False
+        return True
+
+    @staticmethod
+    def validate_date_of_birth(date_of_birth):
         return True
 
     def edit_contact_address(self, new_address):
