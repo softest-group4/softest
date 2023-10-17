@@ -1,3 +1,4 @@
+import Levenshtein
 class ContactList:
     BACKUP_FILENAME = "contacts_backup.txt"
 
@@ -21,14 +22,25 @@ class ContactList:
         for contact in self.contact_list:
             self.contact_names.append(contact.name)
 
+    def suggest_contact_name(self, contact_name):
+        best_match = None
+        min_distance = float("inf")
+
+        for name in self.contact_names:
+            distance = Levenshtein.distance(name, contact_name)
+            if distance < min_distance:
+                min_distance = distance
+                best_match = name
+
+        return best_match
+
     def get_contact_from_contact_list(self, contact_name):
         for contact in self.contact_list:
             if contact.name == contact_name:
-                print(f"Znaleziono kontakt: '{contact_name}'. Numer telefonu: {contact.phone}")
                 return contact
 
-        print(f"Kontakt o nazwie '{contact_name}' nie istnieje.")
-        return None
+        suggestion = self.suggest_contact_name(contact_name)
+        return suggestion if suggestion else None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
         contact_to_edit = None
