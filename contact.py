@@ -38,6 +38,10 @@ class Contact:
 
     @staticmethod
     def validate_date_of_birth(date_of_birth):
+        try:
+            datetime.strptime(date_of_birth, "%Y-%m-%d")
+        except ValueError:
+            return False
         return True
 
     def edit_contact_address(self, new_address):
@@ -54,7 +58,7 @@ class Contact:
 
     def edit_contact_email(self, new_email):
         if self.validate_email_address(new_email):
-            self.email = new_email
+            self.mail = new_email
         else:
             print("Invalid email address. Correct the email format")
 

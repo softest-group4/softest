@@ -90,7 +90,7 @@ class Ui:
             if Contact.validate_email_address(self.arg_m) is False:
                 return f"Niepowodzenie! Niepoprawny format adresu mail"
             if Contact.validate_date_of_birth(self.arg_b) is False:
-                return f"Niepowodzenie! Niepoprawny format daty urodzenia"
+                return f"Niepowodzenie! Niepoprawny format daty urodzenia. Wprowadź datę w formacie YYYY-mm-dd"
             new_contact = Contact(self.arg_n, self.arg_a, self.arg_p, self.arg_m, self.arg_b)
             result = self.contacts.add_new_contact(new_contact)
             if result == "Sukces!":
