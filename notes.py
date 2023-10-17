@@ -17,10 +17,23 @@ class Notes:
         pass
 
     def edit_note_in_notes(self, title, new_value):
-        pass
+        for note in self.notes:
+            if note.title == title:
+                note.edit_note(title, new_value)
+                print(f"Notatka '{title}' została zaktualizowana.")
+                break
+        else:
+            print(f"Nie znaleziono notatki '{title}'.")
 
     def delete_note_from_notes(self, title):
-        pass
+        for note in self.notes:
+            if note.title == title:
+                self.notes.remove(note)
+                print(f"Notatka '{title}' została usunięta.")
+                break
+        else:
+            print(f"Nie można usunąć. Notatka '{title}' nie istnieje.")
+
 
     def load_notes_from_hard_disc(self):
         pass
