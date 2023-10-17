@@ -81,6 +81,8 @@ class Ui:
         pass
 
     def perform_add(self):
+        if len(self.cmd_seq) == 1:
+            return f"Niepowodzenie! Brak argumentów dla polecenia add"
         if self.cmd_seq[1] == "contact":
             if "-n" not in self.cmd_seq:
                 return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia add contact'
@@ -100,7 +102,7 @@ class Ui:
         elif self.cmd_seq[1] == "note":
             pass
         else:
-            return f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add note"'
+            return f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add note "'
 
     def perform_edit(self):
         pass
