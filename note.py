@@ -8,4 +8,5 @@ class Note:
         self.tag = tag
 
     def edit_note(self, title, new_note):
-        pass
+        self.title = title
+        self.note = new_note
