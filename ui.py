@@ -1,6 +1,8 @@
 from datetime import datetime
 from contact import Contact
 from contact_list import ContactList
+from note import Note
+from notes import Notes
 
 
 class Ui:
@@ -15,12 +17,16 @@ class Ui:
         self.arg_p = None
         self.arg_m = None
         self.arg_b = None
+        self.arg_t = None
+        self.arg_c = None
 
     def load_from_db(self):
         # self.contacts = self.mdb.select_db_content()
         contact_1 = Contact("Andrzej", "Wrocław", "000000000", "andrzej.b.czajka@gmail.com", datetime(1970, 1, 1))
         contact_2 = Contact("Marta", "Wrocław", "000000000", "adres@gmail.com", datetime(1970, 1, 1))
+        note_1 = Note("tytuł notatki", "treść notatki")
         self.contacts = ContactList([contact_1, contact_2])
+        self.notes = Notes([note_1])
 
     def run(self):
         while True:
@@ -100,7 +106,14 @@ class Ui:
                 # self.mdb.insert_contact_into_db(new_contact)
             return result
         elif self.cmd_seq[1] == "note":
-            pass
+            if "-t" not in self.cmd_seq:
+                return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia add note'
+            self.get_arguments_values()
+            new_note = Note(self.arg_t, self.arg_c)
+            result = self.notes.add_new_note(new_note)
+            if result == "Sukces!":
+                pass
+                # self.mdb.insert_contact_into_db(new_note)
         else:
             return f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add note "'
 
@@ -130,3 +143,5 @@ class Ui:
         self.arg_p = self.find_arg_value(f"-p")
         self.arg_m = self.find_arg_value(f"-m")
         self.arg_b = self.find_arg_value(f"-b")
+        self.arg_m = self.find_arg_value(f"-t")
+        self.arg_b = self.find_arg_value(f"-c")
