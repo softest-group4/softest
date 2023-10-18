@@ -24,25 +24,34 @@ class Contact:
 
     @staticmethod
     def validate_phone_number(phone):
-        pattern = r"\+48\d{9}"
-        if not re.match(pattern, phone):
-            return False
-        return True
+        if len(phone) == 0:
+            return True
+        else:
+            pattern = r"\+48\d{9}"
+            if not re.match(pattern, phone):
+                return False
+            return True
 
     @staticmethod
     def validate_email_address(mail):
-        pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"
-        if not re.match(pattern, mail):
-            return False
-        return True
+        if len(mail) == 0:
+            return True
+        else:
+            pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"
+            if not re.match(pattern, mail):
+                return False
+            return True
 
     @staticmethod
     def validate_date_of_birth(date_of_birth):
-        try:
-            datetime.strptime(date_of_birth, "%Y-%m-%d")
-        except ValueError:
-            return False
-        return True
+        if len(date_of_birth) == 0:
+            return True
+        else:
+            try:
+                datetime.strptime(date_of_birth, "%Y-%m-%d")
+            except ValueError:
+                return False
+            return True
 
     def edit_contact_address(self, new_address):
         self.address = new_address

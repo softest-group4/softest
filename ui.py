@@ -88,7 +88,7 @@ class Ui:
                 return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia add contact'
             self.get_arguments_values()
             if Contact.validate_phone_number(self.arg_p) is False:
-                return f"Niepowodzenie! Niepoprawny format numeru telefonu"
+                return f"Niepowodzenie! Niepoprawny format numeru telefonu. Wprowadź numer, używając formatu +48xxxxxxxxx"
             if Contact.validate_email_address(self.arg_m) is False:
                 return f"Niepowodzenie! Niepoprawny format adresu mail"
             if Contact.validate_date_of_birth(self.arg_b) is False:
