@@ -11,10 +11,16 @@ class Notes:
         self.notes.append(new_note)
 
     def check_if_note_exists_in_notes(self, title):
-        pass
+        for existing_note in self.notes:
+            if existing_note.title == title:
+                return f"{title} already exists in the base."
+            return f"{title} does not exist in the base."
 
     def get_note_from_notes(self, title):
-        pass
+        for existing_note in self.notes:
+            if existing_note.title == title:
+                return existing_note
+            return None
 
     def edit_note_in_notes(self, title, new_value):
         pass

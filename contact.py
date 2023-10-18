@@ -55,19 +55,17 @@ class Contact:
     def edit_contact_birth_date(self, new_birth_date):
         self.birth_date = new_birth_date
 
-    def get_amount_of_days_to_the_nearest_birthday(contact_list, days):
+    def get_amount_of_days_to_the_nearest_birthday(self):
+
         current_date = datetime.now()
-        upcoming_birthday = []
+        next_birthday = datetime(current_date.year, self.birth_date.month, self.birth_date.day)
+        if next_birthday < current_date:
+            next_birthday = next_birthday.replace(year=current_date.year + 1)
 
-        for contact in contact_list:
-            birthday = datetime.strptime(contact["birth_date"], "%Y -%m -%d")
-            days_until_birthday = birthday.replace(year=current_date.year)
-            time_until_birthday = days_until_birthday - current_date
+        days_until_birthday = (next_birthday - current_date).days
+        return days_until_birthday
 
-            if 0 <= time_until_birthday <= days:
-                upcoming_birthday.append(contact)
 
-        return upcoming_birthday
 
 
 
