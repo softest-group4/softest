@@ -46,14 +46,17 @@ class Ui:
 
     def perform_selected_action_and_print_outcome(self):
         if self.cmd_seq[0] == f"disp":
-            self.perform_disp()
+            print(self.perform_disp())
+            print(self.contacts.get_whole_contact_list())
         elif self.cmd_seq[0] == f"add":
             print(self.perform_add())
             print(self.contacts.get_whole_contact_list())
         elif self.cmd_seq[0] == f"edit":
-            self.perform_edit()
+            print(self.perform_edit())
+            print(self.contacts.get_whole_contact_list())
         elif self.cmd_seq[0] == f"del":
-            self.perform_delete()
+            print(self.perform_delete())
+            print(self.contacts.get_whole_contact_list())
         else:
             print(f"Nie rozpoznano polecenia, wpisz 'help' aby wyświetlić pomoc... ")
 
@@ -201,9 +204,11 @@ class Ui:
 
     def get_arguments_values(self):
         self.arg_n = self.find_arg_value(f"-n")
+        self.arg_n1 = self.find_arg_value(f"-n1")
         self.arg_a = self.find_arg_value(f"-a")
         self.arg_p = self.find_arg_value(f"-p")
         self.arg_m = self.find_arg_value(f"-m")
         self.arg_b = self.find_arg_value(f"-b")
-        self.arg_m = self.find_arg_value(f"-t")
-        self.arg_b = self.find_arg_value(f"-c")
+        self.arg_t = self.find_arg_value(f"-t")
+        self.arg_t1 = self.find_arg_value(f"-t1")
+        self.arg_c = self.find_arg_value(f"-c")
