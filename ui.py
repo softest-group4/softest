@@ -19,6 +19,8 @@ class Ui:
         self.arg_b = None
         self.arg_t = None
         self.arg_c = None
+        self.arg_n1 = None
+        self.arg_t1 = None
 
     def load_from_db(self):
         # self.contacts = self.mdb.select_db_content()
@@ -118,10 +120,70 @@ class Ui:
             return f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add note "'
 
     def perform_edit(self):
-        pass
+        if len(self.cmd_seq) == 1:
+            return f"Niepowodzenie! Brak argumentów dla polecenia edit."
+        if self.cmd_seq[1] == "contact":
+            contact_name = self.arg_n
+            new_contact_name = self.arg_n1
+
+            if self.arg_a:
+                result = self.contacts.edit_contact_address(contact_name, self.arg_a)
+            elif self.arg_p:
+                result = self.contacts.edit_contact_phone(contact_name, self.arg_p)
+            elif self.arg_m:
+                result = self.contacts.edit_contact_email(contact_name, self.arg_m)
+            elif self.arg_b:
+                result = self.contacts.edit_contact_birth_date(contact_name, self.arg_b)
+            else:
+                result = self.contacts.edit_contact_name(contact_name, new_contact_name)
+
+            return result
+
+        elif self.cmd_seq[1] == "note":
+            title = self.arg_t
+            new_title = self.arg_t1
+
+            if self.arg_c:
+                result = self.notes.edit_note_content(title, self.arg_c)
+            else:
+                result = self.notes.edit_note_title(title, new_title)
+
+            return result
+
+        else:
+            return f"Niepowodzenie! Nieobsługiwany argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'."
+
 
     def perform_delete(self):
-        pass
+        if len(self.cmd_seq) == 1:
+            return f"Niepowodzenie! Brak argumentów dla polecenia delete."
+        if self.cmd_seq[1] == "contact":
+            contact_name = self.arg_n
+            if self.arg_:
+                result = self.contacts.delete_contact_address(contact_name)
+            elif self.arg_p:
+                result = self.contacts.delete_contact_phone(contact_name)
+            elif self.arg_m:
+                result = self.contacts.delete_contact_email(contact_name)
+            elif self.arg_b:
+                result = self.contacts.delete_contact_birth_date(contact_name)
+            else:
+                result = self.contacts.delete_contact(contact_name)
+
+            return result
+
+        elif self.cmd_seq[1] == "note":
+            title = self.arg_t
+
+            if self.arg_c:
+                result = self.notes.delete_note_content(title)
+            else:
+                result = self.notes.delete_note(title)
+
+            return result
+
+        else:
+            return f"Niepowodzenie! Nieobsługiwany argument funkcji delete, wybierz argument 'delete contact' lub 'delete note'."
 
     def find_location_of_arg(self, arg):
         location = 0
