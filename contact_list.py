@@ -35,13 +35,12 @@ class ContactList:
         return best_match
 
     def get_contact_from_contact_list(self, contact_name):
-        self.refresh_contact_names()
-
-        if contact_name not in self.contact_names:
-            contact_name = self.suggest_contact_name(contact_name)
         for contact in self.contact_list:
             if contact.name == contact_name:
                 return contact
+
+        suggestion = self.suggest_contact_name(contact_name)
+        return suggestion if suggestion else None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
         contact_to_edit = None
