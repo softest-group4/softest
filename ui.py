@@ -24,7 +24,7 @@ class Ui:
         # self.contacts = self.mdb.select_db_content()
         contact_1 = Contact("Andrzej", "Wrocław", "000000000", "andrzej.b.czajka@gmail.com", datetime(1970, 1, 1))
         contact_2 = Contact("Marta", "Wrocław", "000000000", "adres@gmail.com", datetime(1970, 1, 1))
-        note_1 = Note("tytuł notatki", "treść notatki")
+        note_1 = Note("tytuł", "treść notatki")
         self.contacts = ContactList([contact_1, contact_2])
         self.notes = Notes([note_1])
 
@@ -44,7 +44,7 @@ class Ui:
 
     def perform_selected_action_and_print_outcome(self):
         if self.cmd_seq[0] == f"disp":
-            self.perform_disp()
+            print(self.perform_disp())
         elif self.cmd_seq[0] == f"add":
             print(self.perform_add())
             print(self.contacts.get_whole_contact_list())
@@ -84,7 +84,43 @@ class Ui:
         print(f"quit or exit \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t kończy działanie asystenta")
 
     def perform_disp(self):
-        pass
+        if self.cmd_seq[-1] == "-a" or self.cmd_seq[-1] == "-p" or self.cmd_seq[-1] == "-m" or self.cmd_seq[-1] == "-b" or self.cmd_seq[-1] == "-t":
+            self.cmd_seq.append("")
+        self.get_arguments_values()
+        if len(self.cmd_seq) == 1:
+            return f"Niepowodzenie! Brak argumentów dla polecenia disp"
+        if self.cmd_seq[1] == "-cn":
+            result = ContactList.get_names_list(self.contacts)
+            return f"Lista imion Twoich kontaktów jest następująca: {result}"
+        elif self.cmd_seq[1] == "-nt":
+            result = Notes.get_titles_list(self.notes)
+            return f"Lista tytułów Twoich notatek jest następująca: {result}"
+        elif self.cmd_seq[1] == "contact":
+            self.get_arguments_values()
+            if len(self.cmd_seq) == 4:
+                result = str(ContactList.get_contact_from_contact_list(self.contacts, self.arg_n))
+                return result
+            if "-a" in self.cmd_seq:
+                result = ContactList.get_address_from_contact(self.contacts, self.arg_n)
+                return result
+            elif "-p" in self.cmd_seq:
+                result = ContactList.get_phone_from_contact(self.contacts, self.arg_n)
+                return result
+            elif "-m" in self.cmd_seq:
+                result = ContactList.get_mail_from_contact(self.contacts, self.arg_n)
+                return result
+            elif "-b" in self.cmd_seq:
+                result = ContactList.get_birth_date_from_contact(self.contacts, self.arg_n)
+                return result
+        elif self.cmd_seq[1] == "-b":
+            result = ContactList.get_contacts_with_birthday_soon(self.contacts, self.arg_b)
+            return result
+        elif self.cmd_seq[1] == "note":
+            if self.arg_t == "":
+                return f"Niepowodzenie! Nie wprowadzono tytułu notatki"
+            else:
+                result = Notes.get_content_from_note(self.notes, self.arg_t)
+                return result
 
     def perform_add(self):
         if len(self.cmd_seq) == 1:
@@ -143,5 +179,5 @@ class Ui:
         self.arg_p = self.find_arg_value(f"-p")
         self.arg_m = self.find_arg_value(f"-m")
         self.arg_b = self.find_arg_value(f"-b")
-        self.arg_m = self.find_arg_value(f"-t")
-        self.arg_b = self.find_arg_value(f"-c")
+        self.arg_t = self.find_arg_value(f"-t")
+        self.arg_c = self.find_arg_value(f"-c")

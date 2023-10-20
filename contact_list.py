@@ -35,12 +35,13 @@ class ContactList:
         return best_match
 
     def get_contact_from_contact_list(self, contact_name):
+        self.refresh_contact_names()
+
+        if contact_name not in self.contact_names:
+            contact_name = self.suggest_contact_name(contact_name)
         for contact in self.contact_list:
             if contact.name == contact_name:
                 return contact
-
-        suggestion = self.suggest_contact_name(contact_name)
-        return suggestion if suggestion else None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
         contact_to_edit = None
@@ -81,3 +82,39 @@ class ContactList:
             str_contact_list += str(contact)
         str_contact_list += f"------------------------------------------------------------\n"
         return str_contact_list
+
+    def get_names_list(self):
+        self.refresh_contact_names()
+        return self.contact_names
+
+    def get_address_from_contact(self, contact_name):
+        name = contact_name
+        contact = self.get_contact_from_contact_list(name)
+        return f"{contact.name}    adres: {contact.address}"
+
+    def get_phone_from_contact(self, contact_name):
+        name = contact_name
+        contact = self.get_contact_from_contact_list(name)
+        return f"{contact.name}    numer telefonu: {contact.phone}"
+
+    def get_mail_from_contact(self, contact_name):
+        name = contact_name
+        contact = self.get_contact_from_contact_list(name)
+        return f"{contact.name}    adres e-mail: {contact.mail}"
+
+    def get_birth_date_from_contact(self, contact_name):
+        name = contact_name
+        contact = self.get_contact_from_contact_list(name)
+        return f"{contact.name}    data urodzin: {contact.birth_date}"
+
+    def get_contacts_with_birthday_soon(self, days_to_birthday):
+        contacts_birthday_list = []
+        if days_to_birthday == "":
+            return f"Niepowodzenie! Brak wprowadzonej liczby dni do urodzin"
+        int_days_to_birthday = int(days_to_birthday)
+        for contact in self.contact_list:
+            nearest_birthday = contact.get_amount_of_days_to_the_nearest_birthday()
+            if nearest_birthday <= int_days_to_birthday:
+                contact_with_days_to_birthday = (contact.name, f"{nearest_birthday} dni do urodzin")
+                contacts_birthday_list.append(contact_with_days_to_birthday)
+        return contacts_birthday_list

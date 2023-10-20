@@ -1,13 +1,11 @@
-import note
-
 class Notes:
     BACKUP_FILENAME = "notes_backup.txt"
 
     def __init__(self, notes):
         self.notes = notes
+        self.notes_titles_list = None
 
-    def add_new_note(self, title, content):
-        new_note = note.Note(title, content)
+    def add_new_note(self, new_note):
         self.notes.append(new_note)
 
     def check_if_note_exists_in_notes(self, title):
@@ -40,6 +38,18 @@ class Notes:
         else:
             print(f"Nie można usunąć. Notatka '{title}' nie istnieje.")
 
+    def get_titles_list(self):
+        self.notes_titles_list = []
+        for note in self.notes:
+            self.notes_titles_list.append(note.title)
+        return self.notes_titles_list
+
+    def get_content_from_note(self, note_title):
+        title = note_title
+        note = self.get_note_from_notes(title)
+        if not note:
+            return f"Niepowodzenie! Nie znaleziono notatki o podanym tytule"
+        return f"Treść notatki: {note.note}"
 
     def load_notes_from_hard_disc(self):
         pass
