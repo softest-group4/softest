@@ -126,19 +126,25 @@ class Ui:
         if len(self.cmd_seq) == 1:
             return f"Niepowodzenie! Brak argumentów dla polecenia edit."
         if self.cmd_seq[1] == "contact":
+            if "-n" not in self.cmd_seq:
+                return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia edit contact."
+            self.get_arguments_values()
+            contact = self.contacts. get_contact_from_contact_list(self.arg_n)
+            print(contact)
             contact_name = self.arg_n
             new_contact_name = self.arg_n1
 
             if self.arg_a:
-                result = self.contacts.edit_contact_address(contact_name, self.arg_a)
+                contact.edit_contact_address(self.arg_a)
+                result = self.contacts.edit_contact_address(self.arg_n, self.arg_a)
             elif self.arg_p:
-                result = self.contacts.edit_contact_phone(contact_name, self.arg_p)
+                result = self.contacts.edit_contact_phone(self.arg_n, self.arg_p)
             elif self.arg_m:
-                result = self.contacts.edit_contact_email(contact_name, self.arg_m)
+                result = self.contacts.edit_contact_email(self.arg_n, self.arg_m)
             elif self.arg_b:
-                result = self.contacts.edit_contact_birth_date(contact_name, self.arg_b)
+                result = self.contacts.edit_contact_birth_date(self.arg_n, self.arg_b)
             else:
-                result = self.contacts.edit_contact_name(contact_name, new_contact_name)
+                result = self.contacts.edit_contact_name(self.arg_n, self.arg_n1)
 
             return result
 
@@ -147,9 +153,9 @@ class Ui:
             new_title = self.arg_t1
 
             if self.arg_c:
-                result = self.notes.edit_note_content(title, self.arg_c)
+                result = self.notes.edit_note_content(self.arg_t, self.arg_c)
             else:
-                result = self.notes.edit_note_title(title, new_title)
+                result = self.notes.edit_note_title(self.arg_t, self.arg_t1)
 
             return result
 
@@ -162,16 +168,16 @@ class Ui:
             return f"Niepowodzenie! Brak argumentów dla polecenia delete."
         if self.cmd_seq[1] == "contact":
             contact_name = self.arg_n
-            if self.arg_:
-                result = self.contacts.delete_contact_address(contact_name)
+            if self.arg_a:
+                result = self.contacts.delete_contact_address(self.arg_n)
             elif self.arg_p:
-                result = self.contacts.delete_contact_phone(contact_name)
+                result = self.contacts.delete_contact_phone(self.arg_n)
             elif self.arg_m:
-                result = self.contacts.delete_contact_email(contact_name)
+                result = self.contacts.delete_contact_email(self.arg_n)
             elif self.arg_b:
-                result = self.contacts.delete_contact_birth_date(contact_name)
+                result = self.contacts.delete_contact_birth_date(self.arg_n)
             else:
-                result = self.contacts.delete_contact(contact_name)
+                result = self.contacts.delete_contact(self.arg_n)
 
             return result
 
@@ -179,9 +185,9 @@ class Ui:
             title = self.arg_t
 
             if self.arg_c:
-                result = self.notes.delete_note_content(title)
+                result = self.notes.delete_note_content(self.arg_t)
             else:
-                result = self.notes.delete_note(title)
+                result = self.notes.delete_note(self.arg_t)
 
             return result
 
