@@ -63,13 +63,13 @@ class Contact:
         if self.validate_phone_number(new_phone):
             self.phone = new_phone
         else:
-            print("Invalid phone number. Correct the phone format")
+            print(f"Nieprawidłowy numer telefonu! Popraw format numeru telefonu.")
 
     def edit_contact_email(self, new_email):
         if self.validate_email_address(new_email):
             self.mail = new_email
         else:
-            print("Invalid email address. Correct the email format")
+            print(f"Nieprawidłowy adres email! Popraw format adresu email.")
 
     def edit_contact_birth_date(self, new_birth_date):
         self.birth_date = new_birth_date
