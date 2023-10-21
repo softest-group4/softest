@@ -203,17 +203,16 @@ class Ui:
         if self.cmd_seq[1] == "contact":
             if "-n" not in self.cmd_seq:
                 return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia delete contact."
-            contact_name = self.arg_n
-            if self.arg_a:
-                result = self.contacts.delete_contact_from_contact_list(self.arg_a)
-            elif self.arg_p:
-                result = self.contacts.delete_contact_from_contact_list(self.arg_p)
-            elif self.arg_m:
-                result = self.contacts.delete_contact_from_contact_list(self.arg_m)
-            elif self.arg_b:
-                result = self.contacts.delete_contact_from_contact_list(self.arg_b)
-            else:
-                result = self.contacts.delete_contact_from_contact_list(self.arg_n)
+
+            contact_name = self.arg_n or ""
+
+            if not contact_name:
+                return f"Niepowodzenie! Brak nazwy kontaktu do usunięcia."
+
+            if not self.contacts.check_if_contact_exists_in_contact_list(contact_name):
+                return f"Nie można usunąć. Kontakt o nazwie '{contact_name}' nie istnieje."
+
+            result = self.contacts.delete_contact_from_contact_list(contact_name)
 
             return result
 

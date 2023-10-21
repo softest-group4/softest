@@ -68,7 +68,7 @@ class ContactList:
             self.contact_list.remove(contact_to_delete)
             print(f"Kontakt o nazwie '{contact_name}' został usunięty")
         else:
-            print(f"Nie można usunąć.Kontakt o nazwie'{contact_name}' nie istnieje")
+            print(f"Nie można usunąć.Kontakt o nazwie '{contact_name}' nie istnieje")
 
     def load_contact_list_from_hard_disc(self):
         pass
