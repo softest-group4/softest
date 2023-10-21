@@ -1,6 +1,7 @@
 import pymongo
 from contact import Contact
 from note import Note
+from datetime import datetime
 
 class Mdb:
     def __init__(self):
@@ -35,7 +36,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": contact.birth_date.strftime("%Y-%m-%d") if contact.birth_date else None
+            "birth_date": datetime.strptime(contact.birth_date, "%Y-%m-%d") if contact.birth_date else None
         }
         self.contact_list_collection.insert_one(contact_data)
 
