@@ -27,7 +27,7 @@ class Contact:
         if len(phone) == 0:
             return True
         else:
-            pattern = r"\+48\d{9}"
+            pattern = r"^\+48\d{9}$"
             if not re.match(pattern, phone):
                 return False
             return True
@@ -37,7 +37,7 @@ class Contact:
         if len(mail) == 0:
             return True
         else:
-            pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+"
+            pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
             if not re.match(pattern, mail):
                 return False
             return True
