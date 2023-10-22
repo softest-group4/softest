@@ -1,15 +1,22 @@
 from contact import Contact
 
 
-def test_the_pattern_of_polish_phone_number():
-    test_cases = [
-        ("", True),
-        ("+48123456789", True),
-        ("1234567890", False),
-        ("+4812345678", False),
-        ("+481234567890", False)
-    ]
+def test_empty_phone_number():
+    assert Contact.validate_phone_number("")
 
-    for phone, expected_result in test_cases:
-        result = Contact.validate_phone_number(phone)
-        assert result == expected_result, f"Failed for input: {phone}"
+
+def test_valid_phone_number():
+    assert Contact.validate_phone_number("+48123456789")
+
+
+def test_invalid_phone_number_missing_country_code():
+    assert not Contact.validate_phone_number("123456789")
+
+
+def test_invalid_phone_number_incorrect_digit_count():
+    assert not Contact.validate_phone_number("+4812345678")
+
+
+def test_invalid_phone_number_extra_digit():
+    assert not Contact.validate_phone_number("+481234567890")
+
