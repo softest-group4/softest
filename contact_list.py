@@ -113,6 +113,8 @@ class ContactList:
             return f"Niepowodzenie! Brak wprowadzonej liczby dni do urodzin"
         int_days_to_birthday = int(days_to_birthday)
         for contact in self.contact_list:
+            if not contact.birth_date:
+                continue
             nearest_birthday = contact.get_amount_of_days_to_the_nearest_birthday()
             if nearest_birthday <= int_days_to_birthday:
                 contact_with_days_to_birthday = (contact.name, f"{nearest_birthday} dni do urodzin")
