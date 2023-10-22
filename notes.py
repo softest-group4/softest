@@ -6,13 +6,17 @@ class Notes:
         self.notes_titles_list = None
 
     def add_new_note(self, new_note):
+        if self.check_if_note_exists_in_notes(new_note.title):
+            return (f'Niepowodzenie! Notatka o tytule {new_note.title} już istnieje, wybierz inne tytuł notatki '
+                    f'stosując indeksację, np {new_note.title}_1212')
         self.notes.append(new_note)
+        return "Sukces!"
 
     def check_if_note_exists_in_notes(self, title):
         for existing_note in self.notes:
             if existing_note.title == title:
-                return f"{title} already exists in the base."
-        return f"{title} does not exist in the base."
+                return True
+        return False
 
     def get_note_from_notes(self, title):
         for existing_note in self.notes:
@@ -51,8 +55,9 @@ class Notes:
             return f"Niepowodzenie! Nie znaleziono notatki o podanym tytule"
         return f"Treść notatki: {note.note}"
 
-    def load_notes_from_hard_disc(self):
-        pass
-
-    def save_notes_to_hard_disc(self):
-        pass
+    def get_whole_notes(self):
+        str_notes = f"\nLista notatek jest następująca:\n"
+        for note in self.notes:
+            str_notes += str(note)
+        str_notes += f"------------------------------------------------------------\n"
+        return str_notes

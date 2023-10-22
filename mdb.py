@@ -3,6 +3,7 @@ from contact import Contact
 from note import Note
 from datetime import datetime
 
+
 class Mdb:
     def __init__(self):
         self.client = None
@@ -26,8 +27,8 @@ class Mdb:
                 Contact(contact_dict[f"name"], contact_dict["address"], contact_dict[f"phone"], contact_dict[f"mail"],
                         contact_dict["birth_date"]))
         for note_dict in notes_dict:
-                notes.append(
-                    Note(note_dict[f"title"], note_dict[f"note"], note_dict[f"creation_date"], note_dict[f"tag"]))
+            notes.append(
+                Note(note_dict[f"title"], note_dict[f"note"], note_dict[f"creation_date"], note_dict[f"tag"]))
         return contact_list, notes
 
     def insert_contact_into_db(self, contact):
@@ -40,7 +41,7 @@ class Mdb:
         }
         self.contact_list_collection.insert_one(contact_data)
 
-    def update_contact_in_db(self, contact):
+    def update_contact_in_db(self, contact_name, contact):
         contact_data = {
             "name": contact.name,
             "address": contact.address,
@@ -48,7 +49,7 @@ class Mdb:
             "mail": contact.mail,
             "birth_date": contact.birth_date.strftime("%Y-%m-%d") if contact.birth_date else None
         }
-        self.contact_list_collection.update_one({"_id": contact.id}, {"$set": contact_data})
+        self.contact_list_collection.update_one(filter={"name": contact_name}, update={"$set": contact_data})
 
     def delete_contact_from_db(self, contact):
         self.contact_list_collection.delete_one({"_id": contact.id})

@@ -1,4 +1,6 @@
 import Levenshtein
+
+
 class ContactList:
     BACKUP_FILENAME = "contacts_backup.txt"
 
@@ -42,20 +44,24 @@ class ContactList:
         for contact in self.contact_list:
             if contact.name == contact_name:
                 return contact
+        return None
 
     def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
-        contact_to_edit = None
+        contact_to_edit = self.get_contact_from_contact_list(contact_name)
+        print(contact_name)
+        print(contact_to_edit)
+        # contact_to_edit = None
+        #
+        # for contact in self.contact_list:
+        #     if contact.name == contact_name:
+        #         contact_to_edit = contact
+        #         break
 
-        for contact in self.contact_list:
-            if contact.name == contact_name:
-                contact_to_edit = contact
-                break
-
-        if contact_to_edit:
+        if contact_to_edit is not None:
             setattr(contact_to_edit, contact_feature, new_value)
-            print(f"Kontakt o nazwie '{contact_name}' zaktualizowany.")
+            return f"Sukces!"
         else:
-            print(f"Kontakt o nazwie '{contact_name}' nie istnieje.")
+            return f"Jakiś błąd, jeszcze nie wiemy jaki"
 
     def delete_contact_from_contact_list(self, contact_name):
         contact_to_delete = None
@@ -69,12 +75,6 @@ class ContactList:
             print(f"Kontakt o nazwie '{contact_name}' został usunięty")
         else:
             print(f"Nie można usunąć.Kontakt o nazwie '{contact_name}' nie istnieje")
-
-    def load_contact_list_from_hard_disc(self):
-        pass
-
-    def save_contact_list_to_hard_disc(self):
-        pass
 
     def get_whole_contact_list(self):
         str_contact_list = f"\nLista kontaktów w Twojej bazie jest następująca:\n"
