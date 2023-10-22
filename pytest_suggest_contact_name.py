@@ -1,4 +1,4 @@
-import pytest
+
 from contact_list import ContactList
 class ContactList:
     def setup_method(self):
