@@ -69,9 +69,11 @@ class Ui:
         print(f"disp contact -n <contact_name> \t\t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla wszystkie informacje o wybranym "
               f"kontakcie")
         print(f"disp contact -n <contact_name> -a \t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla adres wybranego kontaktu")
-        print(f"disp contact -n <contact_name> -p \t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla numer telefonu wybranego kontaktu")
+        print(
+            f"disp contact -n <contact_name> -p \t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla numer telefonu wybranego kontaktu")
         print(f"disp contact -n <contact_name> -m \t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla adres mail wybranego kontaktu")
-        print(f"disp contact -n <contact_name> -b \t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla datę urodzenia wybranego kontaktu")
+        print(
+            f"disp contact -n <contact_name> -b \t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla datę urodzenia wybranego kontaktu")
         print(f"disp -b <days> \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla kontakty, które obchodzą urodziny w "
               f"ciągu najbliższych <days> dni")
         print(f"disp note -t <title_name> \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t wyświetla treść notatki o wybranym tytule")
@@ -82,14 +84,15 @@ class Ui:
         print(f"edit contact -n <contact_name> <property> <new_property_value> "
               f"\t\t\t\t\t\t modyfikuje wybraną właściwość wybranego kontaktu"
               f"\t możliwe wartości parametru <property> to -a, -p -m lub -b")
-        print(f"edit note it <title> -t1 <new_title> \t\t\t\t\t\t\t\t\t\t\t\t zmienia tytuł wybranej notatki")
+        print(f"edit note -t <title> -t1 <new_title> \t\t\t\t\t\t\t\t\t\t\t\t zmienia tytuł wybranej notatki")
         print(f"edit note -t <title> -c <new_content> \t\t\t\t\t\t\t\t\t\t\t\t zmienia treść wybranej notatki")
         print(f"del contact -n <contact_name> \t\t\t\t\t\t\t\t\t\t\t\t\t\t usuwa kontakt z Twojej listy kontaktów")
         print(f"del note -t <title> \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t usuwa wybraną notatkę z Twojej listy notatek")
         print(f"quit or exit \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t kończy działanie asystenta")
 
     def perform_disp(self):
-        if self.cmd_seq[-1] == "-a" or self.cmd_seq[-1] == "-p" or self.cmd_seq[-1] == "-m" or self.cmd_seq[-1] == "-b" or self.cmd_seq[-1] == "-t":
+        if self.cmd_seq[-1] == "-a" or self.cmd_seq[-1] == "-p" or self.cmd_seq[-1] == "-m" or self.cmd_seq[
+            -1] == "-b" or self.cmd_seq[-1] == "-t":
             self.cmd_seq.append("")
         self.get_arguments_values()
         if len(self.cmd_seq) == 1:
@@ -163,7 +166,7 @@ class Ui:
             if "-n" not in self.cmd_seq:
                 return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia edit contact."
             self.get_arguments_values()
-            contact = self.contacts. get_contact_from_contact_list(self.arg_n)
+            contact = self.contacts.get_contact_from_contact_list(self.arg_n)
             print(contact)
             contact_name = self.arg_n
             new_contact_name = self.arg_n1
@@ -171,9 +174,9 @@ class Ui:
             if self.arg_a:
                 result = self.contacts.edit_contact_in_contact_list(self.arg_n, "address", self.arg_a)
             elif self.arg_p:
-                result = self.contacts.edit_contact_in_contact_list(self.arg_n, "phone",  self.arg_p)
+                result = self.contacts.edit_contact_in_contact_list(self.arg_n, "phone", self.arg_p)
             elif self.arg_m:
-                result = self.contacts.edit_contact_in_contact_list(self.arg_n, "email",  self.arg_m)
+                result = self.contacts.edit_contact_in_contact_list(self.arg_n, "email", self.arg_m)
             elif self.arg_b:
                 result = self.contacts.edit_contact_in_contact_list(self.arg_n, "birth_date", self.arg_b)
             else:
@@ -195,7 +198,6 @@ class Ui:
 
         else:
             return f"Niepowodzenie! Nieobsługiwany argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'."
-
 
     def perform_delete(self):
         if len(self.cmd_seq) == 1:
@@ -238,9 +240,12 @@ class Ui:
         return -1
 
     def find_arg_value(self, arg):
-        if arg in self.cmd_seq:
-            arg_location = self.find_location_of_arg(arg)
-            return self.cmd_seq[arg_location + 1]
+        if arg in self.inp:
+            value_candidate = self.inp.split(arg + f" ")[1]
+            for argument in [f" -n ", f" -n1 ", f" -a ", f" -p ", f" -m ", f" -b ", f" -t ", f" -t1 ", f" -c "]:
+                if argument in value_candidate:
+                    return value_candidate.split(argument)[0]
+            return value_candidate
         return f""
 
     def get_arguments_values(self):
