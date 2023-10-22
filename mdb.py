@@ -36,7 +36,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": datetime.strptime(contact.birth_date, "%Y-%m-%d") if contact.birth_date else None
+            "birth_date": datetime.strptime(contact.birth_date, "%Y-%m-%d") if contact.birth_date else ""
         }
         self.contact_list_collection.insert_one(contact_data)
 
