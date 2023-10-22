@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 
+
 class Contact:
     def __init__(self, name, address, phone, mail, birth_date):
         self.name = name
@@ -83,25 +84,3 @@ class Contact:
 
         days_until_birthday = (next_birthday - current_date).days
         return days_until_birthday
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
