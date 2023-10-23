@@ -158,7 +158,8 @@ class Ui:
             if result == "Sukces!":
                 self.mdb.insert_note_into_db(new_note)
         else:
-            return f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add note "'
+            return (f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add '
+                    f'note "')
 
     def perform_edit(self):
         if len(self.cmd_seq) == 1:
@@ -185,21 +186,22 @@ class Ui:
                 contact_to_edit.edit_contact_name(self.arg_n1)
             self.mdb.update_contact_in_db(self.arg_n, contact_to_edit)
             return f"Sukces!"
-
         elif self.cmd_seq[1] == "note":
             if "-t" not in self.cmd_seq:
                 return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia edit note"
             self.get_arguments_values()
-            if not self.arg_t:
-                return f"Niepowodzenie! Nie odnaleziono notaki o tytule {self.arg_t}."
-
-            result = self.notes.edit_note_in_notes(self.arg_t, self.arg_t1, self.arg_c)
-            if result == "Sukces!":
-                note_to_edit = self.notes.get_note_from_notes(self.arg_t)
-                if note_to_edit:
-                    self.mdb.update_note_in_db(self.arg_t, note_to_edit)
+            note_to_edit = self.notes.get_note_from_notes(self.arg_t)
+            if note_to_edit is None:
+                return f"Niepowodzenie! Nie odnaleziono notatki o tytule {self.arg_t}"
+            if self.arg_t1 != f"":
+                note_to_edit.edit_title(self.arg_t1)
+            if self.arg_c != f"":
+                note_to_edit.edit_note(self.arg_c)
+            self.mdb.update_note_in_db(self.arg_t, note_to_edit)
+            return f"Sukces!"
         else:
-            return f"Niepowodzenie! Nieprawidłowy argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'"
+            return (f"Niepowodzenie! Nieprawidłowy argument funkcji edit, wybierz argument 'edit contact' lub 'edit"
+                    f"note'")
 
     def perform_delete(self):
         if len(self.cmd_seq) == 1:
@@ -218,22 +220,20 @@ class Ui:
                 result = self.contacts.delete_contact_from_contact_list(self.arg_n)
                 if result == "Sukces!":
                     self.mdb.delete_contact_from_db(self.arg_n, contact_to_delete)
-
         elif self.cmd_seq[1] == "note":
             if "-t" not in self.cmd_seq:
                 return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia delete note'
             self.get_arguments_values()
             if not self.arg_t:
                 return f"Niepowodzenie! Nie odnaleziono notaki o tytule {self.arg_t}."
-
             result = self.notes.delete_note_from_notes(self.arg_t)
             if result == "Sukces!":
                 note_to_delete = self.notes.get_note_from_notes(self.arg_t)
                 if note_to_delete:
                     self.mdb.delete_note_from_db(self.arg_t, note_to_delete)
-
         else:
-            return f"Niepowodzenie! Nieprawidłowy argument funkcji delete, wybierz argument 'delete contact' lub 'delete note'"
+            return (f"Niepowodzenie! Nieprawidłowy argument funkcji delete, wybierz argument 'delete contact' lub "
+                    f"'delete note'")
 
     def find_location_of_arg(self, arg):
         location = 0
