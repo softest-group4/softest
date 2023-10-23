@@ -64,17 +64,18 @@ class ContactList:
             return f"Jakiś błąd, jeszcze nie wiemy jaki"
 
     def delete_contact_from_contact_list(self, contact_name):
-        contact_to_delete = None
+        contact_to_delete = self.get_contact_from_contact_list(contact_name)
+        print(contact_name)
 
-        for contact in self.contact_list:
-            if contact.name == contact_name:
-                contact_to_delete = contact
-                break
-        if contact_to_delete:
+        # for contact in self.contact_list:
+        #     if contact.name == contact_name:
+        #         contact_to_delete = contact
+        #         break
+        if contact_to_delete is not None:
             self.contact_list.remove(contact_to_delete)
-            print(f"Kontakt o nazwie '{contact_name}' został usunięty")
+            return f"Sukces!"
         else:
-            print(f"Nie można usunąć.Kontakt o nazwie '{contact_name}' nie istnieje")
+            return f"Nie można usunąć. Kontakt o nazwie '{contact_name}' nie istnieje"
 
     def get_whole_contact_list(self):
         str_contact_list = f"\nLista kontaktów w Twojej bazie jest następująca:\n"
