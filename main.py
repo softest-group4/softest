@@ -1,9 +1,16 @@
+from pymongo.errors import ServerSelectionTimeoutError
+
 from ui import Ui
 
 
 def main():
     ui = Ui()
-    ui.load_from_db()
+    try:
+        print(f"Cześć! Próbuję nawiązać połączenie z Twoją bazą danych :)")
+        ui.load_from_db()
+    except ServerSelectionTimeoutError:
+        print(f"Nie udało się nawiązać połączenia, sprawdź poprawność instalacji serwera MongoDb")
+        return
     ui.run()
 
 
