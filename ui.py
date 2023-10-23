@@ -126,8 +126,13 @@ class Ui:
                 result = ContactList.get_birth_date_from_contact(self.contacts, self.arg_n)
                 return result
         elif self.cmd_seq[1] == "-b":
-            result = ContactList.get_contacts_with_birthday_soon(self.contacts, self.arg_b)
-            return result
+            if self.arg_b == f"":
+                return f"Niepowodzenie! Brak wprowadzonej liczby dni do urodzin"
+            try:
+                int_days_to_birthday = int(self.arg_b)
+            except ValueError:
+                return f"Niepowodzenie! Argument -b musimy być wartością liczbową"
+            return ContactList.get_contacts_with_birthday_soon(self.contacts, int_days_to_birthday)
         elif self.cmd_seq[1] == "note":
             if self.arg_t == "":
                 return f"Niepowodzenie! Nie wprowadzono tytułu notatki"

@@ -76,9 +76,9 @@ class Contact:
         self.birth_date = new_birth_date
 
     def get_amount_of_days_to_the_nearest_birthday(self):
-
         current_date = datetime.now()
-        next_birthday = datetime(current_date.year, self.birth_date.month, self.birth_date.day)
+        birth_date = datetime.strptime(self.birth_date, f"%Y-%m-%d")
+        next_birthday = datetime(current_date.year, birth_date.month, birth_date.day)
         if next_birthday < current_date:
             next_birthday = next_birthday.replace(year=current_date.year + 1)
 
