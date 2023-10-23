@@ -42,11 +42,19 @@ class Notes:
         else:
             print(f"Nie można usunąć. Notatka '{title}' nie istnieje.")
 
-    def get_titles_list(self):
+    def refresh_titles_list(self):
         self.notes_titles_list = []
         for note in self.notes:
             self.notes_titles_list.append(note.title)
-        return self.notes_titles_list
+
+    def print_titles_list(self):
+        self.refresh_titles_list()
+        str_titles_list = ""
+        if not self.notes_titles_list:
+            return f"Lista notatek jest pusta, nie można wyświetlić tytułów"
+        for title in self.notes_titles_list:
+            str_titles_list += str(title) + "\n"
+        return str_titles_list
 
     def get_content_from_note(self, note_title):
         title = note_title

@@ -86,26 +86,39 @@ class ContactList:
 
     def get_names_list(self):
         self.refresh_contact_names()
-        return self.contact_names
+        str_names_list = ""
+        if not self.contact_names:
+            return f"Lista kontaktów jest pusta, nie można wyświetlić ich nazw"
+        for name in self.contact_names:
+            str_names_list += str(name) + "\n"
+        return str_names_list
 
     def get_address_from_contact(self, contact_name):
         name = contact_name
         contact = self.get_contact_from_contact_list(name)
+        if not contact.address:
+            return f"Szukany kontakt nie ma wprowadzonego adresu"
         return f"{contact.name}    adres: {contact.address}"
 
     def get_phone_from_contact(self, contact_name):
         name = contact_name
         contact = self.get_contact_from_contact_list(name)
+        if not contact.phone:
+            return f"Szukany kontakt nie ma wprowadzonego numeru telefonu"
         return f"{contact.name}    numer telefonu: {contact.phone}"
 
     def get_mail_from_contact(self, contact_name):
         name = contact_name
         contact = self.get_contact_from_contact_list(name)
+        if not contact.mail:
+            return f"Szukany kontakt nie ma wprowadzonego adresu e-mail"
         return f"{contact.name}    adres e-mail: {contact.mail}"
 
     def get_birth_date_from_contact(self, contact_name):
         name = contact_name
         contact = self.get_contact_from_contact_list(name)
+        if not contact.birth_date:
+            return f"Szukany kontakt nie ma wprowadzonej daty urodzenia"
         return f"{contact.name}    data urodzin: {contact.birth_date}"
 
     def get_contacts_with_birthday_soon(self, days_to_birthday):
