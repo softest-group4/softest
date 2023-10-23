@@ -25,7 +25,7 @@ class Mdb:
         for contact_dict in contact_list_dict:
             contact_list.append(
                 Contact(contact_dict[f"name"], contact_dict["address"], contact_dict[f"phone"], contact_dict[f"mail"],
-                        contact_dict["birth_date"]))
+                        contact_dict[f"birth_date"]))
         for note_dict in notes_dict:
             notes.append(
                 Note(note_dict[f"title"], note_dict[f"note"], note_dict[f"creation_date"], note_dict[f"tag"]))
@@ -37,7 +37,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": datetime.strptime(contact.birth_date, "%Y-%m-%d") if contact.birth_date else ""
+            "birth_date": contact.birth_date if contact.birth_date else None
         }
         self.contact_list_collection.insert_one(contact_data)
 
@@ -47,7 +47,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": contact.birth_date.strftime("%Y-%m-%d") if contact.birth_date else None
+            "birth_date": contact.birth_date if contact.birth_date else None
         }
         self.contact_list_collection.update_one(filter={"name": contact_name}, update={"$set": contact_data})
 

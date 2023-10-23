@@ -96,15 +96,12 @@ class ContactList:
         return f"{contact.name}    data urodzin: {contact.birth_date}"
 
     def get_contacts_with_birthday_soon(self, days_to_birthday):
-        contacts_birthday_list = []
-        if days_to_birthday == "":
-            return f"Niepowodzenie! Brak wprowadzonej liczby dni do urodzin"
-        int_days_to_birthday = int(days_to_birthday)
+        contacts_birthday_list = f""
         for contact in self.contact_list:
             if not contact.birth_date:
                 continue
             nearest_birthday = contact.get_amount_of_days_to_the_nearest_birthday()
-            if nearest_birthday <= int_days_to_birthday:
-                contact_with_days_to_birthday = (contact.name, f"{nearest_birthday} dni do urodzin")
-                contacts_birthday_list.append(contact_with_days_to_birthday)
+            if nearest_birthday <= days_to_birthday:
+                contact_with_days_to_birthday = f"{contact.name}: {nearest_birthday} dni do urodzin \n"
+                contacts_birthday_list += contact_with_days_to_birthday
         return contacts_birthday_list
