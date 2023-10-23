@@ -63,14 +63,14 @@ class Mdb:
         }
         self.notes_collection.insert_one(note_data)
 
-    def update_note_in_db(self, note):
+    def update_note_in_db(self, title, note):
         note_data = {
             "title": note.title,
-            "content": note.note,
+            "note": note.note,
             "creation_date": note.creation_date,
             "tag": note.tag
         }
-        self.notes_collection.update_one({"_id": note.id}, {"$set": note_data})
+        self.notes_collection.update_one(filter={"title": title}, update={"$set": note_data})
 
     def delete_note_from_db(self, note):
         self.notes_collection.delete_one({"_id": note.id})
