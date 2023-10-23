@@ -103,10 +103,10 @@ class Ui:
             return f"Niepowodzenie! Brak argumentów dla polecenia disp"
         if self.cmd_seq[1] == "-cn":
             result = ContactList.get_names_list(self.contacts)
-            return f"Lista imion Twoich kontaktów jest następująca: {result}"
+            return f"Lista imion Twoich kontaktów jest następująca:\n{result}"
         elif self.cmd_seq[1] == "-nt":
-            result = Notes.get_titles_list(self.notes)
-            return f"Lista tytułów Twoich notatek jest następująca: {result}"
+            result = Notes.print_titles_list(self.notes)
+            return result
         elif self.cmd_seq[1] == "contact":
             self.get_arguments_values()
             if len(self.cmd_seq) == 4:
