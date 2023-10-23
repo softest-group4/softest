@@ -187,14 +187,17 @@ class Ui:
             return f"Sukces!"
 
         elif self.cmd_seq[1] == "note":
+            if "-t" not in self.cmd_seq:
+                return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia edit note"
+            self.get_arguments_values()
+            if not self.arg_t:
+                return f"Niepowodzenie! Nie odnaleziono notaki o tytule {self.arg_t}."
 
-            if self.arg_c:
-                result = self.notes.edit_note_in_notes(self.arg_t, self.arg_c)
-            else:
-                result = self.notes.edit_note_in_notes(self.arg_t, self.arg_t1)
-
-            return result
-
+            result = self.notes.edit_note_in_notes(self.arg_t, self.arg_t1, self.arg_c)
+            if result == "Sukces!":
+                note_to_edit = self.notes.get_note_from_notes(self.arg_t)
+                if note_to_edit:
+                    self.mdb.update_note_in_db(self.arg_t, note_to_edit)
         else:
             return f"Niepowodzenie! Nieobsługiwany argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'."
 
