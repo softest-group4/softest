@@ -38,30 +38,10 @@ class ContactList:
 
     def get_contact_from_contact_list(self, contact_name):
         self.refresh_contact_names()
-
-        # if contact_name not in self.contact_names:
-        #     contact_name = self.suggest_contact_name(contact_name)
         for contact in self.contact_list:
             if contact.name == contact_name:
                 return contact
         return None
-
-    # def edit_contact_in_contact_list(self, contact_name, contact_feature, new_value):
-    #     contact_to_edit = self.get_contact_from_contact_list(contact_name)
-    #     print(contact_name)
-    #     print(contact_to_edit)
-        # contact_to_edit = None
-        #
-        # for contact in self.contact_list:
-        #     if contact.name == contact_name:
-        #         contact_to_edit = contact
-        #         break
-
-        # if contact_to_edit is not None:
-        #     setattr(contact_to_edit, contact_feature, new_value)
-        #     return f"Sukces!"
-        # else:
-        #     return f"Jakiś błąd, jeszcze nie wiemy jaki"
 
     def delete_contact_from_contact_list(self, contact_name):
         contact_to_delete = self.get_contact_from_contact_list(contact_name)
