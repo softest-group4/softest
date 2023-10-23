@@ -199,7 +199,7 @@ class Ui:
                 if note_to_edit:
                     self.mdb.update_note_in_db(self.arg_t, note_to_edit)
         else:
-            return f"Niepowodzenie! Nieobsługiwany argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'."
+            return f"Niepowodzenie! Nieprawidłowy argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'"
 
     def perform_delete(self):
         if len(self.cmd_seq) == 1:
@@ -207,32 +207,33 @@ class Ui:
         if self.cmd_seq[1] == "contact":
             if "-n" not in self.cmd_seq:
                 return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia delete contact."
-
-            contact_name = self.arg_n or ""
-
-            if not contact_name:
-                return f"Niepowodzenie! Brak nazwy kontaktu do usunięcia."
-
-            if not self.contacts.check_if_contact_exists_in_contact_list(contact_name):
-                return f"Nie można usunąć. Kontakt o nazwie '{contact_name}' nie istnieje."
-
-            result = self.contacts.delete_contact_from_contact_list(contact_name)
-
-            return result
+            self.get_arguments_values()
+            validate = self.validate_re_variables()
+            if validate != f"":
+                return validate
+            contact_to_delete = self.contacts.get_contact_from_contact_list(self.arg_n)
+            if contact_to_delete is None:
+                return f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}."
+            if contact_to_delete:
+                result = self.contacts.delete_contact_from_contact_list(self.arg_n)
+                if result == "Sukces!":
+                    self.mdb.delete_contact_from_db(self.arg_n, contact_to_delete)
 
         elif self.cmd_seq[1] == "note":
-            title = self.arg_t
+            if "-t" not in self.cmd_seq:
+                return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia delete note'
+            self.get_arguments_values()
+            if not self.arg_t:
+                return f"Niepowodzenie! Nie odnaleziono notaki o tytule {self.arg_t}."
 
-            if self.arg_c:
-                result = self.notes.delete_note_from_notes(self.arg_t)
-            else:
-                result = self.notes.delete_note_from_notes(self.arg_t)
-
-            return result
+            result = self.notes.delete_note_from_notes(self.arg_t)
+            if result == "Sukces!":
+                note_to_delete = self.notes.get_note_from_notes(self.arg_t)
+                if note_to_delete:
+                    self.mdb.delete_note_from_db(self.arg_t, note_to_delete)
 
         else:
-            return (f"Niepowodzenie! Nieobsługiwany argument funkcji delete, wybierz argument 'delete contact' lub "
-                    f"'delete note'.")
+            return f"Niepowodzenie! Nieprawidłowy argument funkcji delete, wybierz argument 'delete contact' lub 'delete note'"
 
     def find_location_of_arg(self, arg):
         location = 0
