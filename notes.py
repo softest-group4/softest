@@ -24,23 +24,26 @@ class Notes:
                 return existing_note
         return None
 
-    def edit_note_in_notes(self, title, new_value):
-        for note in self.notes:
-            if note.title == title:
-                note.edit_note(title, new_value)
-                print(f"Notatka '{title}' została zaktualizowana.")
-                break
+    def edit_note_in_notes(self, title, new_title, new_content):
+        note_to_edit = self.get_note_from_notes(title)
+
+        if note_to_edit:
+            if new_title:
+                note_to_edit.title = new_title
+            if new_content:
+                note_to_edit.content = new_content
+                return f"Sukces!"
         else:
-            print(f"Nie znaleziono notatki '{title}'.")
+            return f"Nie znaleziono notatki '{title}'."
 
     def delete_note_from_notes(self, title):
-        for note in self.notes:
-            if note.title == title:
-                self.notes.remove(note)
-                print(f"Notatka '{title}' została usunięta.")
-                break
+        note_to_delete = self.get_note_from_notes(title)
+
+        if note_to_delete:
+            self.notes.remove(note_to_delete)
+            return f"Sukces!"
         else:
-            print(f"Nie można usunąć. Notatka '{title}' nie istnieje.")
+            return f"Nie można usunąć. Notatka '{title}' nie istnieje."
 
     def refresh_titles_list(self):
         self.notes_titles_list = []
