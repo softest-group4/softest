@@ -173,7 +173,9 @@ class Ui:
                 return validate
             contact_to_edit = self.contacts.get_contact_from_contact_list(self.arg_n)
             if contact_to_edit is None:
-                return f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}"
+                suggestion = self.contacts.suggest_contact_name(self.arg_n)
+                return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
+                        f"\n\nCzy chodziło Ci o {suggestion}?")
             if self.arg_a != f"":
                 contact_to_edit.edit_contact_address(self.arg_a)
             if self.arg_p != f"":
@@ -210,16 +212,14 @@ class Ui:
             if "-n" not in self.cmd_seq:
                 return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia delete contact."
             self.get_arguments_values()
-            validate = self.validate_re_variables()
-            if validate != f"":
-                return validate
             contact_to_delete = self.contacts.get_contact_from_contact_list(self.arg_n)
             if contact_to_delete is None:
-                return f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}."
-            if contact_to_delete:
-                result = self.contacts.delete_contact_from_contact_list(self.arg_n)
-                if result == "Sukces!":
-                    self.mdb.delete_contact_from_db(self.arg_n, contact_to_delete)
+                suggestion = self.contacts.suggest_contact_name(self.arg_n)
+                return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
+                        f"\n\nCzy chodziło Ci o {suggestion}?")
+            result = self.contacts.delete_contact_from_contact_list(self.arg_n)
+            if result == "Sukces!":
+                self.mdb.delete_contact_from_db(self.arg_n)
         elif self.cmd_seq[1] == "note":
             if "-t" not in self.cmd_seq:
                 return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia delete note'
@@ -228,9 +228,7 @@ class Ui:
                 return f"Niepowodzenie! Nie odnaleziono notaki o tytule {self.arg_t}."
             result = self.notes.delete_note_from_notes(self.arg_t)
             if result == "Sukces!":
-                note_to_delete = self.notes.get_note_from_notes(self.arg_t)
-                if note_to_delete:
-                    self.mdb.delete_note_from_db(self.arg_t, note_to_delete)
+                self.mdb.delete_note_from_db(self.arg_t)
         else:
             return (f"Niepowodzenie! Nieprawidłowy argument funkcji delete, wybierz argument 'delete contact' lub "
                     f"'delete note'")

@@ -51,8 +51,8 @@ class Mdb:
         }
         self.contact_list_collection.update_one(filter={"name": contact_name}, update={"$set": contact_data})
 
-    def delete_contact_from_db(self, contact):
-        self.contact_list_collection.delete_one({"_id": contact.id})
+    def delete_contact_from_db(self, contact_name):
+        self.contact_list_collection.delete_one(filter={"name": contact_name})
 
     def insert_note_into_db(self, note):
         note_data = {
@@ -72,8 +72,8 @@ class Mdb:
         }
         self.notes_collection.update_one(filter={"title": title}, update={"$set": note_data})
 
-    def delete_note_from_db(self, note):
-        self.notes_collection.delete_one({"_id": note.id})
+    def delete_note_from_db(self, title):
+        self.notes_collection.delete_one(filter={"title": title})
 
     def close_connection(self):
         if self.client:
