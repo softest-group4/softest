@@ -95,6 +95,7 @@ class Ui:
         print(f"quit or exit \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t kończy działanie asystenta")
 
     def perform_disp(self):
+        self.inp += f" "
         if self.cmd_seq[-1] == "-a" or self.cmd_seq[-1] == "-p" or self.cmd_seq[-1] == "-m" or self.cmd_seq[
                                 -1] == "-b" or self.cmd_seq[-1] == "-t":
             self.cmd_seq.append("")
