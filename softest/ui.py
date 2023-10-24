@@ -1,7 +1,7 @@
-from contact import Contact
-from contact_list import ContactList
-from note import Note
-from notes import Notes
+from contact.contact import Contact
+from contact.contact_list import ContactList
+from note.note import Note
+from note.notes import Notes
 from mdb import Mdb
 
 
@@ -97,21 +97,20 @@ class Ui:
         if len(self.cmd_seq) == 1:
             return f"Niepowodzenie! Brak argumentów dla polecenia disp"
         if self.cmd_seq[1] == "-cn":
-            result = ContactList.get_names_list(self.contacts)
+            result = self.contacts.get_names_list()
             return f"Lista imion Twoich kontaktów jest następująca:\n{result}"
         elif self.cmd_seq[1] == "-nt":
-            result = Notes.print_titles_list(self.notes)
+            result = self.notes.print_titles_list()
             return result
         elif self.cmd_seq[1] == "contact":
             self.get_arguments_values()
             if len(self.cmd_seq) == 4:
                 self.arg_n = self.arg_n.split(f" ")[0]
-                contact_to_display = self.contacts.get_contact_from_contact_list(self.arg_n)
-                if contact_to_display is None:
-                    suggestion = self.contacts.suggest_contact_name(self.arg_n)
-                    return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
-                            f"\nCzy chodziło Ci o {suggestion}?")
-                return contact_to_display
+            contact_to_display = self.contacts.get_contact_from_contact_list(self.arg_n)
+            if contact_to_display is None:
+                suggestion = self.contacts.suggest_contact_name(self.arg_n)
+                return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
+                        f"\nCzy chodziło Ci o {suggestion}?")
             if "-a" in self.cmd_seq:
                 return self.contacts.get_address_from_contact(self.arg_n)
             elif "-p" in self.cmd_seq:
