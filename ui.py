@@ -159,6 +159,7 @@ class Ui:
             result = self.notes.add_new_note(new_note)
             if result == "Sukces!":
                 self.mdb.insert_note_into_db(new_note)
+            return result
         else:
             return (f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add '
                     f'note "')
@@ -222,6 +223,7 @@ class Ui:
             result = self.contacts.delete_contact_from_contact_list(self.arg_n)
             if result == "Sukces!":
                 self.mdb.delete_contact_from_db(self.arg_n)
+            return result
         elif self.cmd_seq[1] == "note":
             if "-t" not in self.cmd_seq:
                 return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia delete note'
@@ -231,6 +233,7 @@ class Ui:
             result = self.notes.delete_note_from_notes(self.arg_t)
             if result == "Sukces!":
                 self.mdb.delete_note_from_db(self.arg_t)
+            return result
         else:
             return (f"Niepowodzenie! Nieprawidłowy argument funkcji delete, wybierz argument 'delete contact' lub "
                     f"'delete note'")
