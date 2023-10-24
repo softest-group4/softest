@@ -38,9 +38,36 @@ Analyzing user-entered text to identify and suggest contact names when conductin
 This feature enhances user convenience by suggesting relevant contact names as search results
 
 
-## Installation
+## Run Locally
 
-TBD
+Clone the project
+
+```bash
+  git clone https://github.com/softest-group4/softest.git
+```
+
+Install MongoDB on your machine
+
+```bash
+  https://www.mongodb.com/docs/manual/administration/install-community/
+```
+
+Install dependencies
+
+```bash
+  pip install pymongo~=4.5.0 Levenshtein~=0.23.0 pytest~=7.4.2 setuptools~=65.5.1
+
+```
+
+In setup.py run the following command
+```bash
+  pip install .
+
+```
+Our PA is now installed and ready for use! 
+
+If you encounter any issues during the installation process, make sure you have Python and pip properly configured on your system, and double-check the versions of the specified dependencies in your setup.py and requirements.txt files.
+
 
 ```bash
 
