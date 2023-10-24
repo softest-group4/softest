@@ -25,7 +25,7 @@ class Mdb:
         for contact_dict in contact_list_dict:
             contact_list.append(
                 Contact(contact_dict[f"name"], contact_dict["address"], contact_dict[f"phone"], contact_dict[f"mail"],
-                        contact_dict["birth_date"]))
+                        contact_dict[f"birth_date"]))
         for note_dict in notes_dict:
             notes.append(
                 Note(note_dict[f"title"], note_dict[f"note"], note_dict[f"creation_date"], note_dict[f"tag"]))
@@ -37,7 +37,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": datetime.strptime(contact.birth_date, "%Y-%m-%d") if contact.birth_date else ""
+            "birth_date": contact.birth_date if contact.birth_date else None
         }
         self.contact_list_collection.insert_one(contact_data)
 
@@ -47,12 +47,12 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": contact.birth_date.strftime("%Y-%m-%d") if contact.birth_date else None
+            "birth_date": contact.birth_date if contact.birth_date else None
         }
         self.contact_list_collection.update_one(filter={"name": contact_name}, update={"$set": contact_data})
 
-    def delete_contact_from_db(self, contact):
-        self.contact_list_collection.delete_one({"_id": contact.id})
+    def delete_contact_from_db(self, contact_name):
+        self.contact_list_collection.delete_one(filter={"name": contact_name})
 
     def insert_note_into_db(self, note):
         note_data = {
@@ -63,17 +63,17 @@ class Mdb:
         }
         self.notes_collection.insert_one(note_data)
 
-    def update_note_in_db(self, note):
+    def update_note_in_db(self, title, note):
         note_data = {
             "title": note.title,
-            "content": note.note,
+            "note": note.note,
             "creation_date": note.creation_date,
             "tag": note.tag
         }
-        self.notes_collection.update_one({"_id": note.id}, {"$set": note_data})
+        self.notes_collection.update_one(filter={"title": title}, update={"$set": note_data})
 
-    def delete_note_from_db(self, note):
-        self.notes_collection.delete_one({"_id": note.id})
+    def delete_note_from_db(self, title):
+        self.notes_collection.delete_one(filter={"title": title})
 
     def close_connection(self):
         if self.client:

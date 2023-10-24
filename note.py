@@ -7,6 +7,8 @@ class Note:
         self.note = note
         if creation_date is None:
             self.creation_date = datetime.now()
+        else:
+            self.creation_date = creation_date
         self.tag = tag
 
     def __str__(self):
@@ -16,6 +18,8 @@ class Note:
         str_contact += "\n"
         return str_contact
 
-    def edit_note(self, title, new_note):
-        self.title = title
+    def edit_note(self, new_note):
         self.note = new_note
+
+    def edit_title(self, new_title):
+        self.title = new_title
