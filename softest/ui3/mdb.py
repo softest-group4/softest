@@ -1,6 +1,6 @@
 import pymongo
-from contact.contact import Contact
-from note.note import Note
+from softest.ui3.contact.contact import Contact
+from softest.ui3.note.note import Note
 
 
 class Mdb:
@@ -36,7 +36,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": contact.birth_date if contact.birth_date else None
+            "birth_date": contact.birth_date if contact.birth_date else f""
         }
         self.contact_list_collection.insert_one(contact_data)
 
@@ -46,7 +46,7 @@ class Mdb:
             "address": contact.address,
             "phone": contact.phone,
             "mail": contact.mail,
-            "birth_date": contact.birth_date if contact.birth_date else None
+            "birth_date": contact.birth_date if contact.birth_date else f""
         }
         self.contact_list_collection.update_one(filter={"name": contact_name}, update={"$set": contact_data})
 

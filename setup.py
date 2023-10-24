@@ -8,4 +8,5 @@ setup(name='softest',
       author_email='softest.group4@gmail.com',
       license='educational',
       packages=find_namespace_packages(),
+      entry_points={'console_scripts': ['softest = softest.main:main']}
       )

@@ -1,8 +1,8 @@
-from contact.contact import Contact
-from contact.contact_list import ContactList
-from note.note import Note
-from note.notes import Notes
-from mdb import Mdb
+from softest.ui3.contact.contact import Contact
+from softest.ui3.contact.contact_list import ContactList
+from softest.ui3.note.note import Note
+from softest.ui3.note.notes import Notes
+from softest.ui3.mdb import Mdb
 
 
 class Ui:

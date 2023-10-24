@@ -1,6 +1,6 @@
 import pytest
 
-from ui import Ui
+from ui3 import Ui
 
 
 @pytest.fixture
