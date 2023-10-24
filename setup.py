@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 
 setup(name='softest',
       version='1',
@@ -7,4 +7,5 @@ setup(name='softest',
       author='softest-group4',
       author_email='softest.group4@gmail.com',
       license='educational',
-      packages=['pytest', 'Levenshtein', 'pymongo'])
+      packages=find_namespace_packages(),
+      )
