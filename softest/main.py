@@ -1,6 +1,6 @@
 from pymongo.errors import ServerSelectionTimeoutError
 
-from ui import Ui
+from ui3.ui3 import Ui
 
 
 def main():
