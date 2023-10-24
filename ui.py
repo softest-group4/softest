@@ -47,20 +47,12 @@ class Ui:
     def perform_selected_action_and_print_outcome(self):
         if self.cmd_seq[0] == f"disp":
             print(self.perform_disp())
-            print(self.contacts.get_whole_contact_list())
-            print(self.notes.get_whole_notes())
         elif self.cmd_seq[0] == f"add":
             print(self.perform_add())
-            print(self.contacts.get_whole_contact_list())
-            print(self.notes.get_whole_notes())
         elif self.cmd_seq[0] == f"edit":
             print(self.perform_edit())
-            print(self.contacts.get_whole_contact_list())
-            print(self.notes.get_whole_notes())
         elif self.cmd_seq[0] == f"del":
             print(self.perform_delete())
-            print(self.contacts.get_whole_contact_list())
-            print(self.notes.get_whole_notes())
         else:
             print(f"Nie rozpoznano polecenia, wpisz 'help' aby wyświetlić pomoc... ")
 
@@ -95,6 +87,9 @@ class Ui:
         print(f"quit or exit \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t kończy działanie asystenta")
 
     def perform_disp(self):
+        if self.inp == f"disp -all":
+            return self.contacts.get_whole_contact_list() + self.notes.get_whole_notes()
+        self.inp += f" "
         if self.cmd_seq[-1] == "-a" or self.cmd_seq[-1] == "-p" or self.cmd_seq[-1] == "-m" or self.cmd_seq[
                                 -1] == "-b" or self.cmd_seq[-1] == "-t":
             self.cmd_seq.append("")
@@ -103,36 +98,43 @@ class Ui:
             return f"Niepowodzenie! Brak argumentów dla polecenia disp"
         if self.cmd_seq[1] == "-cn":
             result = ContactList.get_names_list(self.contacts)
-            return f"Lista imion Twoich kontaktów jest następująca: {result}"
+            return f"Lista imion Twoich kontaktów jest następująca:\n{result}"
         elif self.cmd_seq[1] == "-nt":
-            result = Notes.get_titles_list(self.notes)
-            return f"Lista tytułów Twoich notatek jest następująca: {result}"
+            result = Notes.print_titles_list(self.notes)
+            return result
         elif self.cmd_seq[1] == "contact":
             self.get_arguments_values()
             if len(self.cmd_seq) == 4:
-                result = str(ContactList.get_contact_from_contact_list(self.contacts, self.arg_n))
-                return result
+                self.arg_n = self.arg_n.split(f" ")[0]
+                contact_to_display = self.contacts.get_contact_from_contact_list(self.arg_n)
+                if contact_to_display is None:
+                    suggestion = self.contacts.suggest_contact_name(self.arg_n)
+                    return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
+                            f"\nCzy chodziło Ci o {suggestion}?")
+                return contact_to_display
             if "-a" in self.cmd_seq:
-                result = ContactList.get_address_from_contact(self.contacts, self.arg_n)
-                return result
+                return self.contacts.get_address_from_contact(self.arg_n)
             elif "-p" in self.cmd_seq:
-                result = ContactList.get_phone_from_contact(self.contacts, self.arg_n)
-                return result
+                return self.contacts.get_phone_from_contact(self.arg_n)
             elif "-m" in self.cmd_seq:
-                result = ContactList.get_mail_from_contact(self.contacts, self.arg_n)
-                return result
+                return self.contacts.get_mail_from_contact(self.arg_n)
             elif "-b" in self.cmd_seq:
-                result = ContactList.get_birth_date_from_contact(self.contacts, self.arg_n)
-                return result
+                return self.contacts.get_birth_date_from_contact(self.arg_n)
         elif self.cmd_seq[1] == "-b":
-            result = ContactList.get_contacts_with_birthday_soon(self.contacts, self.arg_b)
-            return result
+            if self.arg_b == f"":
+                return f"Niepowodzenie! Brak wprowadzonej liczby dni do urodzin"
+            try:
+                int_days_to_birthday = int(self.arg_b)
+            except ValueError:
+                return f"Niepowodzenie! Argument -b musimy być wartością liczbową"
+            return self.contacts.get_contacts_with_birthday_soon(int_days_to_birthday)
         elif self.cmd_seq[1] == "note":
+            if len(self.cmd_seq) == 4:
+                self.arg_t = self.arg_t.split(f" ")[0]
             if self.arg_t == "":
                 return f"Niepowodzenie! Nie wprowadzono tytułu notatki"
             else:
-                result = Notes.get_content_from_note(self.notes, self.arg_t)
-                return result
+                return self.notes.get_content_from_note(self.arg_t)
 
     def perform_add(self):
         if len(self.cmd_seq) == 1:
@@ -158,7 +160,8 @@ class Ui:
             if result == "Sukces!":
                 self.mdb.insert_note_into_db(new_note)
         else:
-            return f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add note "'
+            return (f'Niepowodzenie! Nieobsługiwany argument funkcji add, wybierz argument "add contact " lub "add '
+                    f'note "')
 
     def perform_edit(self):
         if len(self.cmd_seq) == 1:
@@ -172,7 +175,9 @@ class Ui:
                 return validate
             contact_to_edit = self.contacts.get_contact_from_contact_list(self.arg_n)
             if contact_to_edit is None:
-                return f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}"
+                suggestion = self.contacts.suggest_contact_name(self.arg_n)
+                return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
+                        f"\nCzy chodziło Ci o {suggestion}?")
             if self.arg_a != f"":
                 contact_to_edit.edit_contact_address(self.arg_a)
             if self.arg_p != f"":
@@ -185,18 +190,22 @@ class Ui:
                 contact_to_edit.edit_contact_name(self.arg_n1)
             self.mdb.update_contact_in_db(self.arg_n, contact_to_edit)
             return f"Sukces!"
-
         elif self.cmd_seq[1] == "note":
-
-            if self.arg_c:
-                result = self.notes.edit_note_in_notes(self.arg_t, self.arg_c)
-            else:
-                result = self.notes.edit_note_in_notes(self.arg_t, self.arg_t1)
-
-            return result
-
+            if "-t" not in self.cmd_seq:
+                return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia edit note"
+            self.get_arguments_values()
+            note_to_edit = self.notes.get_note_from_notes(self.arg_t)
+            if note_to_edit is None:
+                return f"Niepowodzenie! Nie odnaleziono notatki o tytule {self.arg_t}"
+            if self.arg_t1 != f"":
+                note_to_edit.edit_title(self.arg_t1)
+            if self.arg_c != f"":
+                note_to_edit.edit_note(self.arg_c)
+            self.mdb.update_note_in_db(self.arg_t, note_to_edit)
+            return f"Sukces!"
         else:
-            return f"Niepowodzenie! Nieobsługiwany argument funkcji edit, wybierz argument 'edit contact' lub 'edit note'."
+            return (f"Niepowodzenie! Nieprawidłowy argument funkcji edit, wybierz argument 'edit contact' lub 'edit"
+                    f"note'")
 
     def perform_delete(self):
         if len(self.cmd_seq) == 1:
@@ -204,32 +213,27 @@ class Ui:
         if self.cmd_seq[1] == "contact":
             if "-n" not in self.cmd_seq:
                 return f"Niepowodzenie! Nie odnaleziono wymaganego argumentu -n dla polecenia delete contact."
-
-            contact_name = self.arg_n or ""
-
-            if not contact_name:
-                return f"Niepowodzenie! Brak nazwy kontaktu do usunięcia."
-
-            if not self.contacts.check_if_contact_exists_in_contact_list(contact_name):
-                return f"Nie można usunąć. Kontakt o nazwie '{contact_name}' nie istnieje."
-
-            result = self.contacts.delete_contact_from_contact_list(contact_name)
-
-            return result
-
+            self.get_arguments_values()
+            contact_to_delete = self.contacts.get_contact_from_contact_list(self.arg_n)
+            if contact_to_delete is None:
+                suggestion = self.contacts.suggest_contact_name(self.arg_n)
+                return (f"Niepowodzenie! Nie odnaleziono kontaktu o imieniu {self.arg_n}!"
+                        f"\nCzy chodziło Ci o {suggestion}?")
+            result = self.contacts.delete_contact_from_contact_list(self.arg_n)
+            if result == "Sukces!":
+                self.mdb.delete_contact_from_db(self.arg_n)
         elif self.cmd_seq[1] == "note":
-            title = self.arg_t
-
-            if self.arg_c:
-                result = self.notes.delete_note_from_notes(self.arg_t)
-            else:
-                result = self.notes.delete_note_from_notes(self.arg_t)
-
-            return result
-
+            if "-t" not in self.cmd_seq:
+                return f'Niepowodzenie! Nie odnaleziono wymaganego argumentu -t dla polecenia delete note'
+            self.get_arguments_values()
+            if not self.arg_t:
+                return f"Niepowodzenie! Nie odnaleziono notaki o tytule {self.arg_t}."
+            result = self.notes.delete_note_from_notes(self.arg_t)
+            if result == "Sukces!":
+                self.mdb.delete_note_from_db(self.arg_t)
         else:
-            return (f"Niepowodzenie! Nieobsługiwany argument funkcji delete, wybierz argument 'delete contact' lub "
-                    f"'delete note'.")
+            return (f"Niepowodzenie! Nieprawidłowy argument funkcji delete, wybierz argument 'delete contact' lub "
+                    f"'delete note'")
 
     def find_location_of_arg(self, arg):
         location = 0
