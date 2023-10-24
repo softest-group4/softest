@@ -1,7 +1,6 @@
 import pymongo
-from contact import Contact
-from note import Note
-from datetime import datetime
+from contact.contact import Contact
+from note.note import Note
 
 
 class Mdb:
